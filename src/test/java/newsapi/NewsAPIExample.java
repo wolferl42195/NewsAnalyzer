@@ -1,5 +1,6 @@
 package newsapi;
 
+import newsanalyzer.ctrl.BuildURLException;
 import newsanalyzer.ctrl.NewsAnalyserException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
@@ -15,7 +16,7 @@ public class NewsAPIExample {
 
     public static final String APIKEY = "c808e079b93d47df95a84133c3102675";
 
-    public static void main(String[] args) throws IOException, NewsAnalyserException {
+    public static void main(String[] args) throws IOException, NewsAnalyserException, BuildURLException {
 
         NewsApi newsApi = new NewsApiBuilder()
                 .setApiKey(APIKEY)
@@ -31,7 +32,7 @@ public class NewsAPIExample {
                 List<Article> articles = newsResponse.getArticles();
                 articles.forEach(article -> System.out.println(article.toString()));
             }
-/*
+
         newsApi = new NewsApiBuilder()
                 .setApiKey(APIKEY)
                 .setQ("corona")
@@ -46,6 +47,6 @@ public class NewsAPIExample {
             articles.stream().forEach(article -> System.out.println(article.toString()));
         }
 
- */
+
     }
 }

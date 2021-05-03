@@ -2,6 +2,7 @@ package newsapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import newsanalyzer.ctrl.BuildURLException;
 import newsanalyzer.ctrl.NewsAnalyserException;
 import newsapi.beans.NewsReponse;
 import newsapi.enums.*;
@@ -105,7 +106,7 @@ public class NewsApi {
         this.endpoint = endpoint;
     }
 
-    protected String requestData() throws IOException, NewsAnalyserException {
+    protected String requestData() throws IOException, BuildURLException {
         String url = buildURL();
         System.out.println("URL: "+url);
         URL obj;
@@ -133,10 +134,10 @@ public class NewsApi {
         return response.toString();
     }
 
-    protected String buildURL() throws NewsAnalyserException {
+    protected String buildURL() throws BuildURLException {
         // TODO ErrorHandling
         if (getApiKey().equals("") || getQ().equals("")){
-            throw new NewsAnalyserException("Eingabe Falsch");
+            throw new BuildURLException("Eingabe Falsch");
         }
         String urlbase = String.format(NEWS_API_URL,getEndpoint().getValue(),getQ(),getApiKey());
         StringBuilder sb = new StringBuilder(urlbase);
@@ -177,7 +178,7 @@ public class NewsApi {
         return sb.toString();
     }
 
-    public NewsReponse getNews() throws IOException, NewsAnalyserException {
+    public NewsReponse getNews() throws IOException, NewsAnalyserException, BuildURLException {
         NewsReponse newsReponse = null;
         String jsonResponse = requestData();
         if(jsonResponse != null && !jsonResponse.isEmpty()){

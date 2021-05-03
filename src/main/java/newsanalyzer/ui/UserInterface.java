@@ -6,15 +6,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 
+import newsanalyzer.ctrl.BuildURLException;
 import newsanalyzer.ctrl.Controller;
 import newsanalyzer.ctrl.NewsAnalyserException;
 import newsapi.NewsApi;
 import newsapi.NewsApiBuilder;
 import newsapi.enums.*;
+import newsreader.downloader.SequentialDownloader;
+import newsreader.downloader.UrlException;
 
 public class UserInterface 
 {
 	private Controller ctrl = new Controller();
+	private Controller dwnld = new Controller();
 
 	public void getDataFromCtrl1(){
 		System.out.println("Choice Headline: Corona-AT");
@@ -28,7 +32,7 @@ public class UserInterface
 				.createNewsApi();
 		try {
 			ctrl.process(news);
-		} catch (MalformedURLException e) {
+		} catch (MalformedURLException | BuildURLException e) {
 			System.out.println("URL Stimmt nicht");
 		} catch (NewsAnalyserException e) {
 			System.out.println(e.getMessage());
@@ -49,7 +53,7 @@ public class UserInterface
 				.createNewsApi();
 		try {
 			ctrl.process(news);
-		} catch (MalformedURLException e) {
+		} catch (MalformedURLException | BuildURLException e) {
 			System.out.println("URL Stimmt nicht");
 		} catch (NewsAnalyserException e) {
 			System.out.println(e.getMessage());
@@ -62,17 +66,42 @@ public class UserInterface
 		System.out.println("All");
 
 		NewsApi news = new NewsApiBuilder()
-				.setApiKey(Controller.APIKEY)
-				.setQ("")
+                .setApiKey(Controller.APIKEY)
+				.setQ("corona")
+				.setEndPoint(Endpoint.EVERYTHING)
+				.setFrom("2020-03-20")
+				.setExcludeDomains("Lifehacker.com")
 				.createNewsApi();
 		try {
 			ctrl.process(news);
-		} catch (MalformedURLException e) {
+		} catch (MalformedURLException | BuildURLException e) {
 			System.out.println("URL Stimmt nicht");
 		} catch (NewsAnalyserException e) {
 			System.out.println(e.getMessage());
 		} catch (IOException e) {
 			System.out.println("Kein Eintrag gefunden");
+		}
+	}
+	public void getDataFromCtrl4(){
+		System.out.println("Download last search");
+
+		NewsApi news = new NewsApiBuilder()
+				.setApiKey(Controller.APIKEY)
+				.setQ("corona")
+				.setEndPoint(Endpoint.TOP_HEADLINES)
+				.setSourceCountry(Country.at)
+				.setSourceCategory(Category.health)
+				.createNewsApi();
+		try {
+			ctrl.downloadUrlToList(news);
+		} catch (MalformedURLException | BuildURLException e) {
+			System.out.println("URL Stimmt nicht");
+		} catch (NewsAnalyserException e) {
+			System.out.println(e.getMessage());
+		} catch (IOException e) {
+			System.out.println("Kein Eintrag gefunden");
+		} catch (UrlException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -87,7 +116,7 @@ public class UserInterface
 		menu.insert("a", "Choice Headline: Corona-AT", this::getDataFromCtrl1);
 		menu.insert("b", "Choice Science NEWS since 23.04.2021", this::getDataFromCtrl2);
 		menu.insert("c", "Choice Error Test", this::getDataFromCtrl3);
-		menu.insert("d", "Not impelemted:",this::getDataForCustomInput);
+		menu.insert("d", "Download last search:",this::getDataFromCtrl4);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
