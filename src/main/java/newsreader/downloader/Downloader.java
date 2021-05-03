@@ -1,3 +1,5 @@
+//https://github.com/RobertFauland/NewsAnalyzer/tree/Uebung_4
+
 package newsreader.downloader;
 
 import newsanalyzer.ctrl.NewsAnalyserException;
