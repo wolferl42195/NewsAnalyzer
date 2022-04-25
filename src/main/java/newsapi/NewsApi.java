@@ -9,8 +9,11 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownServiceException;
+import java.util.IllegalFormatException;
 
 public class NewsApi {
+
 
     public static final String DELIMITER = "&";
 
@@ -111,30 +114,52 @@ public class NewsApi {
         try {
             obj = new URL(url);
         } catch (MalformedURLException e) {
-            // TOOO improve ErrorHandling
+            //TODO improve ErrorHandling
             e.printStackTrace();
+            System.out.println("No protocol is specified, or an unknown protocol is found, or spec is null, or the parsed URL fails to comply with the specific syntax of the associated protocol.");
         }
         HttpURLConnection con;
         StringBuilder response = new StringBuilder();
+        BufferedReader in = null;
+
         try {
             con = (HttpURLConnection) obj.openConnection();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-            in.close();
+        } catch(UnknownServiceException us){
+            System.out.println("Error"+us.getMessage());
         } catch (IOException e) {
-            // TOOO improve ErrorHandling
+            //TODO improve ErrorHandling
             System.out.println("Error "+e.getMessage());
+        }finally {
+            try{
+                if(in != null){}
+                in.close();
+            }catch(Exception e){
+                System.out.println("Unable to close file - "+e.getMessage());
+            }
         }
         return response.toString();
     }
 
     protected String buildURL() {
-        // TODO ErrorHandling
-        String urlbase = String.format(NEWS_API_URL,getEndpoint().getValue(),getQ(),getApiKey());
-        StringBuilder sb = new StringBuilder(urlbase);
+        //TODO ErrorHandling
+        String urlbase = null;
+        StringBuilder sb = null;
+
+        try {
+            urlbase = String.format(NEWS_API_URL, getEndpoint().getValue(), getQ(), getApiKey());
+        }catch(IllegalFormatException e){
+            System.out.println("Die URL entspricht nicht den Anforderungen");
+        }finally {
+            sb = new StringBuilder(urlbase);
+        }
+
+
+
 
         if(getFrom() != null){
             sb.append(DELIMITER).append("from=").append(getFrom());

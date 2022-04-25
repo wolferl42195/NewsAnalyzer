@@ -6,6 +6,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import newsanalyzer.ctrl.Controller;
+import newsapi.NewsApi;
+import newsapi.NewsApiBuilder;
+import newsapi.enums.Category;
+import newsapi.enums.Country;
+import newsapi.enums.Endpoint;
 
 public class UserInterface 
 {
@@ -13,9 +18,17 @@ public class UserInterface
 	private Controller ctrl = new Controller();
 
 	public void getDataFromCtrl1(){
-		System.out.println("ABC");
+		System.out.println("Aktuelle News aus den USA");
 
-		ctrl.process();
+		NewsApi newsApi = new NewsApiBuilder()
+				.setApiKey("0f56e3caf2bd40098043d590b51b317e")
+				.setQ("corona")
+				.setEndPoint(Endpoint.TOP_HEADLINES)
+				.setSourceCountry(Country.us)
+				.setSourceCategory(Category.health)
+				.createNewsApi();
+
+		ctrl.process(newsApi);
 	}
 
 	public void getDataFromCtrl2(){
@@ -31,12 +44,12 @@ public class UserInterface
 
 
 	public void start() {
-		Menu<Runnable> menu = new Menu<>("User Interfacx");
+		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitel("Wählen Sie aus:");
-		menu.insert("a", "Choice ABC", this::getDataFromCtrl1);
+		menu.insert("a", "Aktuelle News aus den USA", this::getDataFromCtrl1);
 		menu.insert("b", "Choice DEF", this::getDataFromCtrl2);
 		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
-		menu.insert("d", "Choice User Imput:",this::getDataForCustomInput);
+		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {
