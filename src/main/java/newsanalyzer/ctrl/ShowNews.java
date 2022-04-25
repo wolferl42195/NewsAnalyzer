@@ -20,7 +20,14 @@ public class ShowNews {
         newsResponse = newsApi.getNews();
         if (newsResponse != null) {
             articles = newsResponse.getArticles();
-            articles.stream().forEach(article -> System.out.println(article.toString()));
+            articles.stream().forEach(article -> System.out.println("\n"
+                    +"Title: "+article.getTitle()+"\n"
+                    +"Author: "+article.getAuthor()+"\n"
+                    +"Description: "+article.getDescription()+"\n"
+                    +"Published at: "+article.getPublishedAt()+"\n"
+                    +"Content: "+article.getContent()+"\n"
+                    +"Publisher: "+article.getSource().getName()+"\n"
+            ));
         } else {
             throw new NewsApiException("Error in Controller");
         }

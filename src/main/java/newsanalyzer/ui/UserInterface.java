@@ -12,6 +12,7 @@ import newsapi.NewsApiException;
 import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
+import newsapi.enums.Language;
 
 public class UserInterface 
 {
@@ -28,6 +29,7 @@ public class UserInterface
 				//.setSourceCountry()
 				.setPageSize("10")
 				.setSourceCategory(Category.technology)
+				.setLanguage(Language.en)
 				.createNewsApi();
 		try {
 			ctrl.process(newsApi);
@@ -44,6 +46,7 @@ public class UserInterface
 				.setQ("")
 				.setEndPoint(Endpoint.TOP_HEADLINES)
 				.setSourceCountry(Country.at)
+				.setLanguage(Language.de)
 				.setPageSize("30")
 				.setSourceCategory(Category.sports)
 				.createNewsApi();
@@ -62,6 +65,7 @@ public class UserInterface
 				.setQ("apple")
 				.setEndPoint(Endpoint.TOP_HEADLINES)
 				//.setSourceCountry()
+				.setLanguage(Language.en)
 				.setPageSize("30")
 				.setSourceCategory(Category.technology)
 				.createNewsApi();

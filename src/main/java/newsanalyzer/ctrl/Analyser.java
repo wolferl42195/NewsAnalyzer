@@ -48,17 +48,14 @@ public class Analyser {
     }
 
 
-    public String getShortestAuthorName(){
-        List<String> author = new ArrayList<String>();
-        articles.stream().forEach(article -> author.add(article.getAuthor()));
-
-        Set<String> unique = new HashSet<String>(author);
-        String shortestAuthor = null;
-
-        for (String key : unique) {
-
-        }
-        return shortestAuthor;
+    public String getShortestAuthorName() throws NewsApiException {
+        List<Article> articles = newsResponse.getArticles();
+            Article shortestAuthor = articles.stream()
+                    .filter(au -> au.getAuthor() != null)
+                    .sorted(Comparator.comparingInt(value -> value.getAuthor().length()))
+                    .findFirst()
+                    .orElse(new Article());
+        return shortestAuthor.toString();
     }
 
 }
