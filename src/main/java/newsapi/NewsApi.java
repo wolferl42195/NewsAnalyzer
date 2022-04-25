@@ -129,11 +129,11 @@ public class NewsApi {
             while ((inputLine = in.readLine()) != null) {
                 response.append(inputLine);
             }
-        } catch(UnknownServiceException us){
-            System.out.println("Error"+us.getMessage());
+        } catch(UnknownServiceException e){
+            System.out.println("Error UnknownServiceException"+e.getMessage());
         } catch (IOException e) {
             //TODO improve ErrorHandling
-            System.out.println("Error "+e.getMessage());
+            System.out.println("Error IOException "+e.getMessage());
         }finally {
             try{
                 if(in != null){}
@@ -212,7 +212,7 @@ public class NewsApi {
                 System.out.println("Error: "+e.getMessage());
             }
         }
-        //TODO improve Errorhandling
+        //TODO improve ErrorHandling
         return newsReponse;
     }
 }

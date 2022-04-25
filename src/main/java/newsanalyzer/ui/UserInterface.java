@@ -22,12 +22,12 @@ public class UserInterface
 
 		NewsApi newsApi = new NewsApiBuilder()
 				.setApiKey("0f56e3caf2bd40098043d590b51b317e")
-				.setQ("corona")
+				.setQ("apple")
 				.setEndPoint(Endpoint.TOP_HEADLINES)
-				.setSourceCountry(Country.us)
-				.setSourceCategory(Category.health)
+				//.setSourceCountry()
+				.setPageSize("100")
+				.setSourceCategory(Category.technology)
 				.createNewsApi();
-
 		ctrl.process(newsApi);
 	}
 

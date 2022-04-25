@@ -4,7 +4,9 @@ import newsapi.NewsApi;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
 
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -17,13 +19,33 @@ public class Controller {
 
 		NewsReponse newsResponse = newsApi.getNews();
 
-		if(newsResponse != null){
-			List<Article> articles = newsResponse.getArticles();
-			articles.stream().forEach(article -> System.out.println(article.toString()));
+		List<Article> articles = null;
+
+		if (newsResponse != null) {
+			articles = newsResponse.getArticles();
+			//articles.stream().forEach(article -> System.out.println(article.toString()));
+		} else {
+			System.out.println("Error in Controller");
 		}
+
+		long article_count = articles.stream().count();
+
+		List<String> authors = new ArrayList<String>();
+
+		//articles.stream().forEach(author -> System.out.println(author.toString()));
+		articles.stream().forEach(article -> System.out.println(article.getAuthor()));  //gets me all authors
+		articles.stream().forEach(article -> authors.add(article.getAuthor()));
+
+		Set<String> unique = new HashSet<String>(authors);
+
+		for (String key : unique) {
+			System.out.println(key + ": " + Collections.frequency(authors, key));
+		}
+
 
 		//TODO implement methods for analysis
 
+		System.out.println("Number of Articles: "+ article_count);
 		System.out.println("End process");
 	}
 	
