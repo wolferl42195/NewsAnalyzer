@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import newsanalyzer.ctrl.Controller;
 import newsapi.NewsApi;
 import newsapi.NewsApiBuilder;
+import newsapi.NewsApiException;
 import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
@@ -18,23 +19,57 @@ public class UserInterface
 	private Controller ctrl = new Controller();
 
 	public void getDataFromCtrl1(){
-		System.out.println("Aktuelle News aus den USA");
+		System.out.println("Aktuelle Tech-News weltweit");
+
+		NewsApi newsApi = new NewsApiBuilder()
+				.setApiKey(Controller.APIKEY)
+				.setQ("")
+				.setEndPoint(Endpoint.TOP_HEADLINES)
+				//.setSourceCountry()
+				.setPageSize("10")
+				.setSourceCategory(Category.technology)
+				.createNewsApi();
+		try {
+			ctrl.process(newsApi);
+		}catch (NewsApiException e){
+			System.out.println("An error occurred! " + e.getMessage());
+		}
+	}
+
+	public void getDataFromCtrl2(){
+		System.out.println("Aktuelle Sport-News aus Österreich");
+
+		NewsApi newsApi = new NewsApiBuilder()
+				.setApiKey("0f56e3caf2bd40098043d590b51b317e")
+				.setQ("")
+				.setEndPoint(Endpoint.TOP_HEADLINES)
+				.setSourceCountry(Country.at)
+				.setPageSize("30")
+				.setSourceCategory(Category.sports)
+				.createNewsApi();
+		try {
+			ctrl.process(newsApi);
+		}catch (NewsApiException e){
+			System.out.println("An error occurred! " + e.getMessage());
+		}
+	}
+
+	public void getDataFromCtrl3(){
+		System.out.println("Aktuelle Apple-News weltweit");
 
 		NewsApi newsApi = new NewsApiBuilder()
 				.setApiKey("0f56e3caf2bd40098043d590b51b317e")
 				.setQ("apple")
 				.setEndPoint(Endpoint.TOP_HEADLINES)
 				//.setSourceCountry()
-				.setPageSize("100")
+				.setPageSize("30")
 				.setSourceCategory(Category.technology)
 				.createNewsApi();
-		ctrl.process(newsApi);
-	}
-
-	public void getDataFromCtrl2(){
-	}
-
-	public void getDataFromCtrl3(){
+		try {
+			ctrl.process(newsApi);
+		}catch (NewsApiException e){
+			System.out.println("An error occurred! " + e.getMessage());
+		}
 
 	}
 	
@@ -46,9 +81,9 @@ public class UserInterface
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitel("Wählen Sie aus:");
-		menu.insert("a", "Aktuelle News aus den USA", this::getDataFromCtrl1);
-		menu.insert("b", "Choice DEF", this::getDataFromCtrl2);
-		menu.insert("c", "Choice 3", this::getDataFromCtrl3);
+		menu.insert("a", "Aktuelle Techn-News weltweit", this::getDataFromCtrl1);
+		menu.insert("b", "Aktuelle Sport-News aus Österreich", this::getDataFromCtrl2);
+		menu.insert("c", "Aktuelle Apple-News weltweit", this::getDataFromCtrl3);
 		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
 		menu.insert("q", "Quit", null);
 		Runnable choice;

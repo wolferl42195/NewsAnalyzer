@@ -1,6 +1,7 @@
 package newsanalyzer.ctrl;
 
 import newsapi.NewsApi;
+import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
 
@@ -12,40 +13,32 @@ public class Controller {
 
 	public static final String APIKEY = "0f56e3caf2bd40098043d590b51b317e";
 
-	public void process(NewsApi newsApi) {
+	public void process(NewsApi newsApi) throws NewsApiException {
 		System.out.println("Start process");
 
 		//TODO implement Error handling
 
-		NewsReponse newsResponse = newsApi.getNews();
-
-		List<Article> articles = null;
-
-		if (newsResponse != null) {
-			articles = newsResponse.getArticles();
-			//articles.stream().forEach(article -> System.out.println(article.toString()));
-		} else {
-			System.out.println("Error in Controller");
-		}
-
-		long article_count = articles.stream().count();
-
-		List<String> authors = new ArrayList<String>();
-
-		//articles.stream().forEach(author -> System.out.println(author.toString()));
-		articles.stream().forEach(article -> System.out.println(article.getAuthor()));  //gets me all authors
-		articles.stream().forEach(article -> authors.add(article.getAuthor()));
-
-		Set<String> unique = new HashSet<String>(authors);
-
-		for (String key : unique) {
-			System.out.println(key + ": " + Collections.frequency(authors, key));
-		}
-
+		ShowNews showNews = new ShowNews(newsApi);
+		showNews.show();
 
 		//TODO implement methods for analysis
 
-		System.out.println("Number of Articles: "+ article_count);
+		Analyser analyser = new Analyser(newsApi);
+
+
+
+		//articles.stream().forEach(author -> System.out.println(author.toString()));
+		//articles.stream().forEach(article -> System.out.println(article.getAuthor()));  //gets me all authors
+
+
+
+
+		//Analysing the most featured Publisher
+
+
+
+		System.out.println("Most featured publisher: "+analyser.getTopPublisher());
+		System.out.println("Number of Articles: "+analyser.getArticleCnt());
 		System.out.println("End process");
 	}
 	
