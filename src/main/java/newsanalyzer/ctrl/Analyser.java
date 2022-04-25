@@ -6,6 +6,7 @@ import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Analyser {
     private List<Article> articles;
@@ -49,13 +50,20 @@ public class Analyser {
 
 
     public String getShortestAuthorName() throws NewsApiException {
-        List<Article> articles = newsResponse.getArticles();
             Article shortestAuthor = articles.stream()
                     .filter(au -> au.getAuthor() != null)
                     .sorted(Comparator.comparingInt(value -> value.getAuthor().length()))
                     .findFirst()
                     .orElse(new Article());
-        return shortestAuthor.toString();
+        return shortestAuthor.getAuthor();
     }
+
+    /*public String sortedTitles() throws NewsApiException {
+        List<Article> sortedTitles = articles.stream()
+                .filter(au -> au.getTitle() != null)
+                .sorted(Comparator.comparing(Article::getTitle))
+                .collect(Collectors.toList());
+        return sortedTitles;
+    }*/
 
 }

@@ -39,7 +39,8 @@ public class Controller {
 
 		System.out.println("Most featured publisher: "+analyser.getTopPublisher());
 		System.out.println("Number of Articles: "+analyser.getArticleCnt());
-		//System.out.println("Shortest Author is: "+analyser.getShortestAuthorName());
+		System.out.println("Shortest Author is: "+analyser.getShortestAuthorName());
+		//System.out.println("Article-Titles sorted alphabetically: "+analyser.sortedTitles());
 		System.out.println("End process");
 	}
 	
