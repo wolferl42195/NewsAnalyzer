@@ -129,7 +129,6 @@ public class NewsApi {
                 response.append(inputLine);
             }
         } catch(UnknownServiceException e){
-            //System.out.println("Error UnknownServiceException - There is something wrong with the connection to the URL ("+e.getMessage());
             throw new NewsApiException("Error UnknownServiceException - There is something wrong with the connection to the URL \""+url+"\" "+e.getMessage());
         } catch (IOException e) {
             //TODO improve ErrorHandling

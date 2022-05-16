@@ -6,7 +6,6 @@ import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Analyser {
     private List<Article> articles;
