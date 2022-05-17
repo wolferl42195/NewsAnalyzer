@@ -4,6 +4,8 @@ package newsanalyzer.ui;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import newsanalyzer.ctrl.Controller;
 import newsapi.NewsApi;
@@ -13,6 +15,8 @@ import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
 import newsapi.enums.Language;
+import newsdownloader.Downloader;
+import newsdownloader.SequentialDownloader;
 
 public class UserInterface 
 {
@@ -76,6 +80,21 @@ public class UserInterface
 		}
 
 	}
+
+	public void downloadLastSearch(){
+		Downloader downloader = new Downloader() {
+			@Override
+			public int process(List<String> urls) {
+				return 0;
+			}
+		};
+		SequentialDownloader sequentialDownloader = new SequentialDownloader();
+		List<String> urlList = new ArrayList<>();
+		urlList.add("https://www.derstandard.at/story/2000135777037/linzer-start-up-storyblok-erhaelt-47-millionen-dollar-investment");
+		sequentialDownloader.process(urlList);
+
+		//downloader.saveUrl2File("https://www.derstandard.at/story/2000135777037/linzer-start-up-storyblok-erhaelt-47-millionen-dollar-investment");
+	}
 	
 	public void getDataForCustomInput() {
 		
@@ -89,6 +108,7 @@ public class UserInterface
 		menu.insert("b", "Aktuelle Sport-News aus Österreich", this::getDataFromCtrl2);
 		menu.insert("c", "Aktuelle Apple-News weltweit", this::getDataFromCtrl3);
 		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
+		menu.insert("e", "Download last search", this::downloadLastSearch);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
 		while ((choice = menu.exec()) != null) {

@@ -1,4 +1,4 @@
-package newsreader.downloader;
+package newsdownloader;
 
 import java.util.List;
 

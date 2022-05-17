@@ -1,4 +1,4 @@
-package newsreader.downloader;
+package newsdownloader;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
