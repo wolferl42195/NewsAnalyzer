@@ -4,10 +4,10 @@ import newsapi.NewsApi;
 import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
+import newsdownloader.SequentialDownloader;
 
+import java.nio.file.Path;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 public class Controller {
 
@@ -42,6 +42,33 @@ public class Controller {
 		System.out.println("Shortest Author is: "+analyser.getShortestAuthorName());
 		//System.out.println("Article-Titles sorted alphabetically: "+analyser.sortedTitles());
 		System.out.println("End process");
+	}
+
+	public void htmlDownloader(NewsApi newsApi) throws NewsApiException {
+		NewsReponse newsResponse = newsApi.getNews();
+		List<Article> articles = null;
+		List<String> finalUrls = new ArrayList<>();
+
+		if (newsResponse != null) {				//get article URLs
+			articles = newsResponse.getArticles();
+			articles.stream().forEach(article -> finalUrls.add(article.getUrl()));
+
+		} else {
+			throw new NewsApiException("Error in Controller");
+		}
+
+		List<String> filteredUrls = new ArrayList<>();
+		for(String s : finalUrls)
+		{
+			 filteredUrls.add(s.replaceAll("[^A-Za-z\\d()\\[\\]\\\\\\.]", ""));
+
+		}
+
+		SequentialDownloader sequentialDownloader = new SequentialDownloader();
+		int urlsdownloaded = sequentialDownloader.process(finalUrls);
+
+		System.out.println("\nNumber of Websites downloaded: " + urlsdownloaded);
+
 	}
 	
 

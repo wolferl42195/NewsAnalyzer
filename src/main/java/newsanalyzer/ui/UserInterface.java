@@ -15,13 +15,12 @@ import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
 import newsapi.enums.Language;
-import newsdownloader.Downloader;
-import newsdownloader.SequentialDownloader;
 
 public class UserInterface 
 {
 
 	private Controller ctrl = new Controller();
+	private NewsApi latestNewsApi;
 
 	public void getDataFromCtrl1(){
 		System.out.println("Aktuelle Tech-News weltweit");
@@ -35,6 +34,7 @@ public class UserInterface
 				.setSourceCategory(Category.technology)
 				.setLanguage(Language.en)
 				.createNewsApi();
+		latestNewsApi = newsApi;
 		try {
 			ctrl.process(newsApi);
 		}catch (NewsApiException e){
@@ -54,6 +54,7 @@ public class UserInterface
 				.setPageSize("30")
 				.setSourceCategory(Category.sports)
 				.createNewsApi();
+		latestNewsApi = newsApi;
 		try {
 			ctrl.process(newsApi);
 		}catch (NewsApiException e){
@@ -73,6 +74,7 @@ public class UserInterface
 				.setPageSize("30")
 				.setSourceCategory(Category.technology)
 				.createNewsApi();
+		latestNewsApi = newsApi;
 		try {
 			ctrl.process(newsApi);
 		}catch (NewsApiException e){
@@ -82,18 +84,11 @@ public class UserInterface
 	}
 
 	public void downloadLastSearch(){
-		Downloader downloader = new Downloader() {
-			@Override
-			public int process(List<String> urls) {
-				return 0;
-			}
-		};
-		SequentialDownloader sequentialDownloader = new SequentialDownloader();
-		List<String> urlList = new ArrayList<>();
-		urlList.add("https://www.derstandard.at/story/2000135777037/linzer-start-up-storyblok-erhaelt-47-millionen-dollar-investment");
-		sequentialDownloader.process(urlList);
-
-		//downloader.saveUrl2File("https://www.derstandard.at/story/2000135777037/linzer-start-up-storyblok-erhaelt-47-millionen-dollar-investment");
+		try{
+			ctrl.htmlDownloader(latestNewsApi);
+		}catch (NewsApiException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	public void getDataForCustomInput() {

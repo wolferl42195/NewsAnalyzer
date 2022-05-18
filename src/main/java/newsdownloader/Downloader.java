@@ -25,9 +25,10 @@ public abstract class Downloader {
 
             fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
             if (fileName.isEmpty()) {
-                fileName = url4download.getHost() + HTML_EXTENTION;
+                fileName = url4download.getHost();
             }
-            os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName);
+            fileName = fileName.replaceAll("[^A-Za-z\\d()\\[\\]\\\\\\.]|(s|.html)", "");        //filter illegal characters for the filename and for the .html ending
+            os = new FileOutputStream(DIRECTORY_DOWNLOAD + fileName + HTML_EXTENTION);                    //add .html ending so every name is the same (avoiding .html.html)
 
             byte[] b = new byte[2048];
             int length;
