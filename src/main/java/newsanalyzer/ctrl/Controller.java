@@ -4,6 +4,7 @@ import newsapi.NewsApi;
 import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
+import newsdownloader.ParallelDownloader;
 import newsdownloader.SequentialDownloader;
 
 import java.nio.file.Path;
@@ -44,7 +45,7 @@ public class Controller {
 		System.out.println("End process");
 	}
 
-	public void htmlDownloader(NewsApi newsApi) throws NewsApiException {
+	public void htmlDownloader(NewsApi newsApi) throws NewsApiException {		//get URLS form newsAPI and call the downloader
 		NewsReponse newsResponse = newsApi.getNews();
 		List<Article> articles = null;
 		List<String> finalUrls = new ArrayList<>();
@@ -57,17 +58,25 @@ public class Controller {
 			throw new NewsApiException("Error in Controller");
 		}
 
-		List<String> filteredUrls = new ArrayList<>();
-		for(String s : finalUrls)
-		{
-			 filteredUrls.add(s.replaceAll("[^A-Za-z\\d()\\[\\]\\\\\\.]", ""));
-
-		}
 
 		SequentialDownloader sequentialDownloader = new SequentialDownloader();
-		int urlsdownloaded = sequentialDownloader.process(finalUrls);
+		ParallelDownloader parallelDownloader = new ParallelDownloader();
 
-		System.out.println("\nNumber of Websites downloaded: " + urlsdownloaded);
+		long startSeqDownload = System.currentTimeMillis();
+		sequentialDownloader.process(finalUrls);
+		long finishSeqDownload = System.currentTimeMillis();
+		long timeSeqDownload = finishSeqDownload - startSeqDownload;
+
+
+		long startParDownload = System.currentTimeMillis();
+		int urlsDownloaded = sequentialDownloader.process(finalUrls);
+		long finishParDownload = System.currentTimeMillis();
+		long timeParDownload = finishParDownload - startParDownload;
+
+
+		System.out.println("\nNumber of Websites downloaded: " + urlsDownloaded);
+		System.out.println("\nSequential Download time needed: "+timeSeqDownload+"ms");
+		System.out.println("\nParallel Download time needed: "+timeParDownload+"ms");
 
 	}
 	
