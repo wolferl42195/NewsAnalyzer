@@ -1,5 +1,7 @@
 package newsdownloader;
 
+import newsapi.NewsApiException;
+
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -9,7 +11,7 @@ public class ParallelDownloader extends Downloader{
 
     int count;
     @Override
-    public int process(List<String> urls) {
+    public int process(List<String> urls) throws  NewsDownloaderException {
 
         ExecutorService executorService = Executors.newFixedThreadPool(1);
 
@@ -30,7 +32,6 @@ public class ParallelDownloader extends Downloader{
         Future<Integer> future = executorService.submit(new Task());
 
         try{
-
             System.out.print("loading");
             while(!(future.isDone())){
                 System.out.print(".");
@@ -38,27 +39,10 @@ public class ParallelDownloader extends Downloader{
             }
             count = future.get();
         }catch(InterruptedException | ExecutionException e){
-            e.printStackTrace(); //TODO replace with own exception
+            throw new NewsDownloaderException("A Problem with the Parallel Downloader has occurred - "+ e.getMessage());
         }
 
         executorService.shutdown();
-
-
-
-
-        /*executorService.execute(new Runnable() {
-            @Override
-            public void run() {
-
-                for (String url : urls) {
-                    String fileName = saveUrl2File(url);
-                    if(fileName != null) {
-                        count++;
-                    }
-                }
-            }
-        });
-        executorService.shutdown();*/
         return count;
     }
 }

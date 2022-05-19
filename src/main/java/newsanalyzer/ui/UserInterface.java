@@ -15,6 +15,7 @@ import newsapi.enums.Category;
 import newsapi.enums.Country;
 import newsapi.enums.Endpoint;
 import newsapi.enums.Language;
+import newsdownloader.NewsDownloaderException;
 
 public class UserInterface 
 {
@@ -86,8 +87,8 @@ public class UserInterface
 	public void downloadLastSearch(){
 		try{
 			ctrl.htmlDownloader(latestNewsApi);
-		}catch (NewsApiException e) {
-			throw new RuntimeException(e);
+		}catch (NewsApiException | NewsDownloaderException e) {
+			System.out.println("An error occurred! " + e.getMessage());
 		}
 	}
 	

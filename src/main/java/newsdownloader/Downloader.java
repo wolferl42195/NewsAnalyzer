@@ -1,5 +1,7 @@
 package newsdownloader;
 
+import newsapi.NewsApiException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,9 +15,9 @@ public abstract class Downloader {
     public static final String HTML_EXTENTION = ".html";
     public static final String DIRECTORY_DOWNLOAD = "./download/";
 
-    public abstract int process(List<String> urls);
+    public abstract int process(List<String> urls) throws NewsApiException, NewsDownloaderException;
 
-    public String saveUrl2File(String urlString) {
+    public String saveUrl2File(String urlString) throws NewsDownloaderException {
         InputStream is = null;
         OutputStream os = null;
         String fileName = "";
@@ -36,13 +38,13 @@ public abstract class Downloader {
                 os.write(b, 0, length);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new NewsDownloaderException("A Problem with the Downloader has occurred - "+ e.getMessage());
         } finally {
             try {
                 Objects.requireNonNull(is).close();
                 Objects.requireNonNull(os).close();
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new NewsDownloaderException("A Problem with the Downloader has occurred - "+ e.getMessage());
             }
         }
         return fileName;

@@ -4,6 +4,7 @@ import newsapi.NewsApi;
 import newsapi.NewsApiException;
 import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
+import newsdownloader.NewsDownloaderException;
 import newsdownloader.ParallelDownloader;
 import newsdownloader.SequentialDownloader;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,6 @@ public class Controller {
 	public void process(NewsApi newsApi) throws NewsApiException {
 		System.out.println("Start process");
 
-		//TODO implement Error handling
 
 		ShowNews showNews = new ShowNews(newsApi);
 		showNews.show();
@@ -46,7 +46,7 @@ public class Controller {
 		System.out.println("End process");
 	}
 
-	public void htmlDownloader(@NotNull NewsApi newsApi) throws NewsApiException {		//get URLS form newsAPI and call the downloader
+	public void htmlDownloader(@NotNull NewsApi newsApi) throws NewsApiException, NewsDownloaderException {		//get URLS form newsAPI and call the downloader
 		NewsReponse newsResponse = newsApi.getNews();
 		List<Article> articles = null;
 		List<String> finalUrls = new ArrayList<>();
