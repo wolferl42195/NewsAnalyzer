@@ -6,6 +6,7 @@ import newsapi.beans.Article;
 import newsapi.beans.NewsReponse;
 import newsdownloader.ParallelDownloader;
 import newsdownloader.SequentialDownloader;
+import org.jetbrains.annotations.NotNull;
 
 import java.nio.file.Path;
 import java.util.*;
@@ -45,12 +46,12 @@ public class Controller {
 		System.out.println("End process");
 	}
 
-	public void htmlDownloader(NewsApi newsApi) throws NewsApiException {		//get URLS form newsAPI and call the downloader
+	public void htmlDownloader(@NotNull NewsApi newsApi) throws NewsApiException {		//get URLS form newsAPI and call the downloader
 		NewsReponse newsResponse = newsApi.getNews();
 		List<Article> articles = null;
 		List<String> finalUrls = new ArrayList<>();
 
-		if (newsResponse != null) {				//get article URLs
+		if (newsResponse != null) {				//get article URLs and put them into a list;
 			articles = newsResponse.getArticles();
 			articles.stream().forEach(article -> finalUrls.add(article.getUrl()));
 
@@ -62,24 +63,33 @@ public class Controller {
 		SequentialDownloader sequentialDownloader = new SequentialDownloader();
 		ParallelDownloader parallelDownloader = new ParallelDownloader();
 
+
+		//call sequential downloader and measure download time needed
+		System.out.println("Sequential Download started:");
 		long startSeqDownload = System.currentTimeMillis();
 		sequentialDownloader.process(finalUrls);
 		long finishSeqDownload = System.currentTimeMillis();
 		long timeSeqDownload = finishSeqDownload - startSeqDownload;
 
 
+		//call parallel downloader and measure download time needed
+		System.out.println("Parallel Download started:");
 		long startParDownload = System.currentTimeMillis();
-		int urlsDownloaded = sequentialDownloader.process(finalUrls);
+		int urlsDownloaded = parallelDownloader.process(finalUrls);
 		long finishParDownload = System.currentTimeMillis();
 		long timeParDownload = finishParDownload - startParDownload;
 
 
-		System.out.println("\nNumber of Websites downloaded: " + urlsDownloaded);
 		System.out.println("\nSequential Download time needed: "+timeSeqDownload+"ms");
 		System.out.println("\nParallel Download time needed: "+timeParDownload+"ms");
 
+		System.out.println("\nNumber of Websites downloaded: " + urlsDownloaded);
+
+
+
 	}
-	
+
+
 
 	public Object getData() {
 		
