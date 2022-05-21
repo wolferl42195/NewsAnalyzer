@@ -15,7 +15,7 @@ public abstract class Downloader {
     public static final String HTML_EXTENTION = ".html";
     public static final String DIRECTORY_DOWNLOAD = "./download/";
 
-    public abstract int process(List<String> urls) throws NewsApiException, NewsDownloaderException;
+    public abstract int process(List<String> urls) throws NewsDownloaderException;
 
     public String saveUrl2File(String urlString) throws NewsDownloaderException {
         InputStream is = null;
