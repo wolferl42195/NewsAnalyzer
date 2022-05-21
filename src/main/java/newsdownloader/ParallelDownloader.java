@@ -43,43 +43,33 @@ public class ParallelDownloader extends Downloader{
 
 
 
-        //Future<Integer> future = executorService.submit(new Task());
-
-
-
         try{
             boolean finished = false;
 
+            System.out.print("Loading");
             while(!finished){
+
                 finished = true;
-                for(Future<Integer> future : allFutures){
+                for(Future<Integer> future : allFutures){       //check if all threads are done
                     if(!future.isDone()){
-                        finished = false;
+                        finished = false;           //if one or more threads are unfinished, set to false;
                     }
                 }
+
+                System.out.print(".");
+                sleep(690);
             }
 
-            for(Future<Integer> future : allFutures){
+            for(Future<Integer> future : allFutures){       //get the results of saveUrl2File (successfully downloaded)
                 count += future.get();
             }
 
-            count = allFutures.size();
 
         }catch(InterruptedException | ExecutionException | CancellationException e){
             throw new NewsDownloaderException("A Problem with the Parallel Downloader has occurred - "+ e.getMessage());
         }
 
 
-        /*try{
-            System.out.print("loading");
-            while(!(future.isDone())){
-                System.out.print(".");
-                sleep(690);
-            }
-            count = future.get();
-        }catch(InterruptedException | ExecutionException | CancellationException e){
-            throw new NewsDownloaderException("A Problem with the Parallel Downloader has occurred - "+ e.getMessage());
-        }*/
 
         executorService.shutdown();
         return count;

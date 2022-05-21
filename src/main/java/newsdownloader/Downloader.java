@@ -21,6 +21,7 @@ public abstract class Downloader {
         InputStream is = null;
         OutputStream os = null;
         String fileName = "";
+
         try {
             URL url4download = new URL(urlString);
             is = url4download.openStream();

@@ -72,7 +72,7 @@ public class Controller {
 		long timeParDownload = finishParDownload - startParDownload;
 
 		//call sequential downloader and measure download time needed
-		System.out.println("Sequential Download started:");
+		System.out.println("\nSequential Download started:");
 		long startSeqDownload = System.currentTimeMillis();
 		sequentialDownloader.process(finalUrls);
 		long finishSeqDownload = System.currentTimeMillis();
@@ -84,7 +84,6 @@ public class Controller {
 
 		System.out.println("\nSequential Download time needed: "+timeSeqDownload+"ms");
 		System.out.println("\nParallel Download time needed: "+timeParDownload+"ms");
-
 		System.out.println("\nNumber of Websites downloaded: " + urlsDownloaded);
 
 

@@ -85,10 +85,14 @@ public class UserInterface
 	}
 
 	public void downloadLastSearch(){
-		try{
-			ctrl.htmlDownloader(latestNewsApi);
-		}catch (NewsApiException | NewsDownloaderException e) {
-			System.out.println("An error occurred! " + e.getMessage());
+		if(latestNewsApi != null) {
+			try {
+				ctrl.htmlDownloader(latestNewsApi);
+			} catch (NewsApiException | NewsDownloaderException e) {
+				System.out.println("An error occurred! " + e.getMessage());
+			}
+		}else{
+			System.out.println("First search for a Topic!");
 		}
 	}
 	
