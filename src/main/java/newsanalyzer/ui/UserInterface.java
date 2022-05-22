@@ -31,7 +31,7 @@ public class UserInterface
 				.setQ("")
 				.setEndPoint(Endpoint.TOP_HEADLINES)
 				//.setSourceCountry()
-				.setPageSize("10")
+				.setPageSize("30")
 				.setSourceCategory(Category.technology)
 				.setLanguage(Language.en)
 				.createNewsApi();
@@ -104,10 +104,10 @@ public class UserInterface
 	public void start() {
 		Menu<Runnable> menu = new Menu<>("User Interface");
 		menu.setTitel("Wählen Sie aus:");
-		menu.insert("a", "Aktuelle Techn-News weltweit", this::getDataFromCtrl1);
+		menu.insert("a", "Aktuelle Tech-News weltweit", this::getDataFromCtrl1);
 		menu.insert("b", "Aktuelle Sport-News aus Österreich", this::getDataFromCtrl2);
 		menu.insert("c", "Aktuelle Apple-News weltweit", this::getDataFromCtrl3);
-		menu.insert("d", "Choice User Input:",this::getDataForCustomInput);
+		menu.insert("d", "Choice User Input: currently unavailable",this::getDataForCustomInput);
 		menu.insert("e", "Download last search", this::downloadLastSearch);
 		menu.insert("q", "Quit", null);
 		Runnable choice;
